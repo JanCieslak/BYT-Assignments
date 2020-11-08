@@ -1,4 +1,4 @@
-package group_one.calculator
+package group_one
 
 import java.lang.IllegalStateException
 
@@ -27,8 +27,9 @@ abstract class BaseExpressionHandler : ExpressionHandler() {
         val splitExpression = expression.split(" ")
         val newExpression = StringBuilder()
 
-        if (splitExpression.size <= 2)
+        if (splitExpression.size <= 2) {
             throw IllegalStateException("Wrong expressions")
+        }
 
         var i = 0
         while (i < splitExpression.size) {
@@ -44,7 +45,7 @@ abstract class BaseExpressionHandler : ExpressionHandler() {
             i++
         }
 
-        return newExpression.toString()
+        return newExpression.toString().trim()
     }
 
     override fun handle(expression: String): Boolean  {
@@ -104,6 +105,7 @@ class PrintExpression: ExpressionHandler() {
 }
 
 fun main() {
+    // Input needs spaces between every sign / number
     val expression = "5 * 5 + 2 - 1 + 23 / 5 * 2 + 3"
     val calculator = PrintExpression()
 
@@ -136,4 +138,18 @@ fun main() {
         .then(PrintExpression())
 
     strangeCalculator.handle(expression)
+
+    // OUTPUT:
+//    Normal calculator:
+//    5 * 5 + 2 - 1 + 23 / 5 * 2 + 3
+//    25 + 2 - 1 + 23 / 10 + 3
+//    25 + 2 - 1 + 2 + 3
+//    27 - 6
+//    21
+//    Strange calculator:
+//    5 * 5 + 2 - 1 + 23 / 5 * 2 + 3
+//    5 * 7 - 24 / 5 * 5
+//    5 * 7 - 4 * 5
+//    5 * 3 * 5
+//    75
 }
