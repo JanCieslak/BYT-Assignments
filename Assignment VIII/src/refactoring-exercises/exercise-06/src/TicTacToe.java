@@ -32,7 +32,18 @@ public class TicTacToe {
 	}
 
 	public char winner() {
-		// check for horizontal winner
+		char horizontal = horizontalCheck();
+		if (horizontal != '-')
+			return horizontal;
+
+		char vertical = verticalCheck();
+		if (vertical != '-')
+			return vertical;
+
+		return diagonalCheck();
+	}
+
+	private char horizontalCheck() {
 		for (int i = 0; i < 9; i += 3) {
 			if (board.charAt(i) != '-'
 					&& board.charAt(i + 1) == board.charAt(i)
@@ -40,7 +51,10 @@ public class TicTacToe {
 				return board.charAt(i);
 		}
 
-		// check for vertical winner
+		return '-';
+	}
+
+	private char verticalCheck() {
 		for (int i = 0; i < 3; ++i) {
 			if (board.charAt(i) != '-'
 					&& board.charAt(i + 3) == board.charAt(i)
@@ -48,15 +62,18 @@ public class TicTacToe {
 				return board.charAt(i);
 		}
 
-		// check for diagonal winner
+		return '-';
+	}
+
+	private char diagonalCheck() {
 		if (board.charAt(0) != '-' && board.charAt(4) == board.charAt(0)
 				&& board.charAt(8) == board.charAt(0))
 			return board.charAt(0);
+
 		if (board.charAt(2) != '-' && board.charAt(4) == board.charAt(2)
 				&& board.charAt(6) == board.charAt(2))
 			return board.charAt(2);
 
-		// no winner yet
 		return '-';
 	}
 }
