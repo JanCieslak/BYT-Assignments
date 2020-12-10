@@ -1,42 +1,52 @@
-public class CsvWriter {
-	public CsvWriter() {
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+
+public class CsvWriter extends Writer {
+	public CsvWriter(OutputStream out) {
+		super(out);
 	}
 
 	public void write(String[][] lines) {
-		for (String[] line : lines)
-			writeLine(line);
+		for (String[] line : lines) {
+			try {
+				writeLine(line);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	private void writeLine(String[] fields) {
+	private void writeLine(String[] fields) throws IOException {
 		if (fields.length == 0) {
-			System.out.println();
+			out.write("\n".getBytes(StandardCharsets.UTF_8));
 		} else {
 			writeField(fields[0]);
 
 			for (int i = 1; i < fields.length; i++) {
-				System.out.print(",");
+				out.write(",".getBytes(StandardCharsets.UTF_8));
 				writeField(fields[i]);
 			}
-			System.out.println();
+			out.write("\n".getBytes(StandardCharsets.UTF_8));
 		}
 	}
 
-	private void writeField(String field) {
+	private void writeField(String field) throws IOException {
 		if (field.indexOf(',') != -1 || field.indexOf('\"') != -1)
 			writeQuoted(field);
 		else
-			System.out.print(field);
+		    out.write(field.getBytes(StandardCharsets.UTF_8));
 	}
 
-	private void writeQuoted(String field) {
-		System.out.print('\"');
+	private void writeQuoted(String field) throws IOException {
+		out.write("\"".getBytes(StandardCharsets.UTF_8));
 		for (int i = 0; i < field.length(); i++) {
 			char c = field.charAt(i);
 			if (c == '\"')
-				System.out.print("\"\"");
+			    out.write("\"\"".getBytes(StandardCharsets.UTF_8));
 			else
-				System.out.print(c);
+			    out.write(String.valueOf(c).getBytes(StandardCharsets.UTF_8));
 		}
-		System.out.print('\"');
+        out.write("\"".getBytes(StandardCharsets.UTF_8));
 	}
 }
